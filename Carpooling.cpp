@@ -12,25 +12,25 @@ class Rider {
     public:
     string name;
     pair<double, double> start, end;
-};
 
-double Distance(Drive& d, Rider& r)
-{
-    return sqrt((d.start.first - r.start.first) * (d.start.first - r.start.first) + (d.start.second - r.start.second) * (d.start.second - r.start.second)) * 111;
-}
-
-vector<int> AvailableRides(vector<Drive>& rides, Rider& r)
-{
-    vector<int> result;
-    for(int i=0; i<rides.size(); i++)
+    double distance(Drive& d)
     {
-        if(rides[i].seats > 0 && Distance(rides[i], r) <= 5.00)
-        {
-            result.push_back(i);
-        }
+        return sqrt((d.start.first - start.first) * (d.start.first - start.first) + (d.start.second - start.second) * (d.start.second - start.second)) * 111;
     }
-    return result;
-}
+    
+    vector<int> availablerides(vector<Drive>& rides, Rider& r)
+    {
+        vector<int> result;
+        for(int i=0; i<rides.size(); i++)
+        {
+            if(rides[i].seats > 0 && r.distance(rides[i]) <= 5.00)
+            {
+                result.push_back(i);
+            }
+        }
+        return result;
+    }
+};
 
 int main()
 {
@@ -66,13 +66,13 @@ int main()
             r.start = {startlat, startlong};
             r.end = {endlat, endlong};
             riders[name] = r;
-            vector<int> available = AvailableRides(rides, r);
+            vector<int> available = r.availablerides(rides, r);
             if(!available.empty())
             {
                 cout << "Available rides: " << endl;
                 for(int a : available)
                 {
-                    cout << "ride_id: " << a << " driver: " << rides[a].drivername << " seats: " << rides[a].seats << " distance: " << Distance(rides[a], r) << endl;
+                    cout << "ride_id: " << a << " driver: " << rides[a].drivername << " seats: " << rides[a].seats << " distance: " << r.distance(rides[a]) << endl;
                 }
             }
         }
@@ -81,7 +81,7 @@ int main()
             string name;
             int id;
             ss >> name >> id;
-            vector<int> available = AvailableRides(rides, riders[name]);
+            vector<int> available = riders[name].availablerides(rides, riders[name]);
             if(find(available.begin(), available.end(), id-1) != available.end())
             {
                 cout << "CONFIRMED" << endl;
@@ -113,15 +113,14 @@ int main()
 // generated ride_id: 1
 // generated ride_id: 2
 // Available rides:
-// ride_id: 1 driver: John distance: 1.39376
-// ride_id: 2 driver: Mary distance: 1.39376
+// ride_id: 0 driver: John seats: 2 distance: 1.56978
+// ride_id: 1 driver: Mary seats: 1 distance: 1.56978
 // CONFIRMED
 // Available rides:
-// ride_id: 1 driver: John distance: 0.556
-// ride_id: 2 driver: Mary distance: 0.556
+// ride_id: 0 driver: John seats: 1 distance: 0.784889
+// ride_id: 1 driver: Mary seats: 1 distance: 2.35467
 // CONFIRMED
 // Available rides:
-// ride_id: 1 driver: John distance: 1.11
-// ride_id: 2 driver: Mary distance: 1.11
+// ride_id: 1 driver: Mary seats: 1 distance: 1.11
 // FAILURE
 // CONFIRMED
