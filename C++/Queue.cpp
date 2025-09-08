@@ -55,6 +55,46 @@ class Queue {
         s2.pop();
         return;
     }
+
+    void size()
+    {
+        cout << s1.size() + s2.size() << endl;
+        return;
+    }
+
+    void empty()
+    {
+        cout << (s1.empty() && s2.empty() ? "YES" : "NO") << endl;
+        return;
+    }
+
+    void print()
+    {
+        if(s1.empty() && s2.empty())
+        {
+            cout << "Empty queue" << endl;
+            return;
+        }
+        stack<int> temp1 = s1, temp2 = s2;
+        cout << "Queue: ";
+        while(!temp2.empty())
+        {
+            cout << temp2.top() << " ";
+            temp2.pop();
+        }
+        while(!temp1.empty())
+        {
+            temp2.push(temp1.top());
+            temp1.pop();
+        }
+        while(!temp2.empty())
+        {
+            cout << temp2.top() << " ";
+            temp2.pop();
+        }
+        cout << endl;
+        return;
+    }
 };
 
 int main()
@@ -80,31 +120,59 @@ int main()
         {
             queue.remove();
         }
+        else if(command == "SIZE")
+        {
+            queue.size();
+        }
+        else if(command == "EMPTY")
+        {
+            queue.empty();
+        }
+        else if(command == "PRINT")
+        {
+            queue.print();
+        }
     }
 }
 
 // INPUT:
 
-// INSERT 11
-// INSERT 22
+// EMPTY
+// INSERT 10
+// INSERT 20
+// INSERT 30
+// SIZE
 // PEEK
+// PRINT
+// REMOVE
+// PRINT
+// SIZE
+// EMPTY
+// REMOVE
+// REMOVE
 // REMOVE
 // PEEK
-// INSERT 33
-// INSERT 44
-// REMOVE
-// REMOVE
-// PEEK
+// SIZE
+// EMPTY
+// PRINT
 
 // OUTPUT:
 
-// Inserted 11
-// Inserted 22
-// 11
-// Removed 11
-// 22
-// Inserted 33
-// Inserted 44
-// Removed 22
-// Removed 33
-// 44
+// YES
+// Inserted 10
+// Inserted 20
+// Inserted 30
+// 3
+// 10
+// Queue: 10 20 30 
+// Removed 10
+// Queue: 20 30 
+// 2
+// NO
+// Removed 20
+// Removed 30
+// -1
+// -1
+// 0
+// YES
+// Empty queue
